@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonar.plugins.groovy.codenarc;
+package org.sonar.plugins.gosu.codenarc;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -25,7 +25,7 @@ import com.google.common.collect.Sets;
 
 import org.apache.commons.lang.StringUtils;
 import org.codenarc.rule.AbstractRule;
-import org.sonar.plugins.groovy.codenarc.apt.AptResult;
+import org.sonar.plugins.gosu.codenarc.apt.AptResult;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;

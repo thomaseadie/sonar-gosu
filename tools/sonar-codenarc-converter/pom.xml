@@ -8,7 +8,7 @@
     <version>36</version>
   </parent>
 
-  <groupId>org.sonarsource.sonar-groovy-plugin.sonar-codenarc-converter</groupId>
+  <groupId>org.sonarsource.sonar-gosu-plugin.sonar-codenarc-converter</groupId>
   <artifactId>sonar-codenarc-converter</artifactId>
   <version>0.1-SNAPSHOT</version>
 

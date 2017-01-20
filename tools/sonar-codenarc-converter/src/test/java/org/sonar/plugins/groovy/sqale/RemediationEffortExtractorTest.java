@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonar.plugins.groovy.sqale;
+package org.sonar.plugins.gosu.sqale;
 
 import org.junit.Test;
 
@@ -28,7 +28,7 @@ public class RemediationEffortExtractorTest {
   @Test
   public void testExtraction() throws Exception {
     RemediationEffortExtractor extractor = new RemediationEffortExtractor();
-    extractor.extractFromSqaleFile("src/test/files/groovy-model.xml");
+    extractor.extractFromSqaleFile("src/test/files/gosu-model.xml");
 
     // 4 common rules
     assertThat(extractor.extractedRules()).hasSize(350 - 4);

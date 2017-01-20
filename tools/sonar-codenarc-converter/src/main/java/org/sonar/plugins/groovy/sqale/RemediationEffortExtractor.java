@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonar.plugins.groovy.sqale;
+package org.sonar.plugins.gosu.sqale;
 
 import org.apache.commons.io.Charsets;
 import org.w3c.dom.Document;
@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class RemediationEffortExtractor {
-  private static final String SQALE_MODEL_LOCATION = "src/test/files/groovy-model.xml";
+  private static final String SQALE_MODEL_LOCATION = "src/test/files/gosu-model.xml";
   private static final String REMEDIATION_FILE_LOCATION = "target/cost.csv";
 
   private List<ExtractedRule> extractedRules = new ArrayList<>();

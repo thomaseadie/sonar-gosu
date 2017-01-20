@@ -17,14 +17,14 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonar.plugins.groovy.codenarc;
+package org.sonar.plugins.gosu.codenarc;
 
 import com.google.common.collect.Lists;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.sonar.plugins.groovy.codenarc.printer.XMLPrinter;
+import org.sonar.plugins.gosu.codenarc.printer.XMLPrinter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -48,7 +48,7 @@ import difflib.Patch;
 
 public class ConverterTest {
 
-  private static final String PLUGIN_RULES_FILE_LOCATION = "../../sonar-groovy-plugin/src/main/resources/org/sonar/plugins/groovy/rules.xml";
+  private static final String PLUGIN_RULES_FILE_LOCATION = "../../sonar-gosu-plugin/src/main/resources/org/sonar/plugins/gosu/rules.xml";
 
   @org.junit.Rule
   public TemporaryFolder tmpDir = new TemporaryFolder();

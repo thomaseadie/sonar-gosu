@@ -1,0 +1,14 @@
+ruleKey;remediationFunction;remediationFactor
+org.codenarc.rule.gosu.GosuNestedIfRule;linear;20min
+org.codenarc.rule.gosu.GosuClassSizeRule;linear;5min
+org.codenarc.rule.gosu.GosuCognitiveComplexityRule;linear;10min
+org.codenarc.rule.gosu.GosuCyclomaticComplexityRule;linear;10min
+org.codenarc.rule.gosu.GosuFunctionSizeRule;linear;10min
+org.codenarc.rule.gosu.GosuFunctionParameterLengthRule;linear;10min
+org.codenarc.rule.gosu.GosuCommentedOutCodeRule;linear;10min
+org.codenarc.rule.gosu.GosuFindStatementRule;linear;10min
+org.codenarc.rule.gosu.GosuGetCountUsageRule;linear;1h
+org.codenarc.rule.gosu.GosuIllegalImportsRule;linear;5min
+org.codenarc.rule.gosu.GosuInternalImportsRule;linear;10min
+org.codenarc.rule.gosu.GosuJavaStyleLineEndingRule;linear;10min
+org.codenarc.rule.gosu.GosuObjectEqualityRule;linear;10min

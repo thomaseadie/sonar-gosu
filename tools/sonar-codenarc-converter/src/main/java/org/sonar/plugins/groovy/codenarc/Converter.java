@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonar.plugins.groovy.codenarc;
+package org.sonar.plugins.gosu.codenarc;
 
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
@@ -25,10 +25,10 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
 import org.codenarc.rule.AbstractRule;
-import org.sonar.plugins.groovy.codenarc.apt.AptParser;
-import org.sonar.plugins.groovy.codenarc.apt.AptResult;
-import org.sonar.plugins.groovy.codenarc.printer.Printer;
-import org.sonar.plugins.groovy.codenarc.printer.XMLPrinter;
+import org.sonar.plugins.gosu.codenarc.apt.AptParser;
+import org.sonar.plugins.gosu.codenarc.apt.AptResult;
+import org.sonar.plugins.gosu.codenarc.printer.Printer;
+import org.sonar.plugins.gosu.codenarc.printer.XMLPrinter;
 
 import java.io.File;
 import java.util.Collections;

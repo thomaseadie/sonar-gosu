@@ -17,17 +17,17 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonar.plugins.groovy.codenarc.printer;
+package org.sonar.plugins.gosu.codenarc.printer;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.sonar.plugins.groovy.codenarc.Converter;
-import org.sonar.plugins.groovy.codenarc.Rule;
-import org.sonar.plugins.groovy.codenarc.RuleParameter;
-import org.sonar.plugins.groovy.codenarc.RuleSet;
+import org.sonar.plugins.gosu.codenarc.Converter;
+import org.sonar.plugins.gosu.codenarc.Rule;
+import org.sonar.plugins.gosu.codenarc.RuleParameter;
+import org.sonar.plugins.gosu.codenarc.RuleSet;
 
 import java.io.File;
 import java.io.IOException;

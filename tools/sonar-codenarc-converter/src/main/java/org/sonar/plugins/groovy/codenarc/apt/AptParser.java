@@ -17,12 +17,12 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonar.plugins.groovy.codenarc.apt;
+package org.sonar.plugins.gosu.codenarc.apt;
 
 import com.google.common.collect.Maps;
 
 import org.apache.commons.lang.StringUtils;
-import org.sonar.plugins.groovy.codenarc.RuleParameter;
+import org.sonar.plugins.gosu.codenarc.RuleParameter;
 
 import java.io.File;
 import java.nio.charset.Charset;

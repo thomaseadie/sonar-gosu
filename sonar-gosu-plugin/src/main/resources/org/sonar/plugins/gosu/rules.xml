@@ -1,0 +1,210 @@
+<!-- Generated using CodeNarc 0.25.2 -->
+<rules>
+ <rule>
+    <key>org.codenarc.rule.gosu.GosuNestedIfRule</key>
+    <severity>MAJOR</severity>
+    <name><![CDATA[Nested If]]></name>
+    <internalKey><![CDATA[GosuNestedIf]]></internalKey>
+    <description><![CDATA[<p>Reports classes with nested if loops. </p>
+<p>Example of violations: </p>
+<pre>
+
+</pre>
+]]></description>
+    <tag>design</tag>
+    <param>
+      <key>maxNestedDepth</key>
+      <description><![CDATA[Maximum allowed nesting depth]]></description>
+      <defaultValue>2</defaultValue>
+    </param>
+  </rule>
+
+  <rule>
+    <key>org.codenarc.rule.gosu.GosuClassSizeRule</key>
+    <severity>MAJOR</severity>
+    <name><![CDATA[Class Size]]></name>
+    <internalKey><![CDATA[GosuClassSize]]></internalKey>
+    <description><![CDATA[<p>Checks if the size of a class exceeds the number of lines specified by the <code>maxLines</code> property. </p>
+ ]]></description>
+    <tag>bug</tag>
+    <param>
+      <key>maxLines</key>
+      <description><![CDATA[The maximum number of lines allowed in a class definition. ]]></description>
+      <defaultValue>1200</defaultValue>
+    </param>
+  </rule>
+
+  <rule>
+    <key>org.codenarc.rule.gosu.GosuCognitiveComplexityRule</key>
+    <severity>MINOR</severity>
+    <name><![CDATA[Cognitive Complexity]]></name>
+    <internalKey><![CDATA[GosuCognitiveComplexity]]></internalKey>
+    <description><![CDATA[<p>Calculates the <Cognitive Complexity> for methods/classes and checks against configured threshold values. </p>
+<p>The <code>maxMethodComplexity</code> property holds the threshold value for the cognitive complexity value for each method. If this value is non-zero, a method with a cognitive complexity value greater than this value is considered a violation. </p>
+ The <cognitive complexity> value is calculated as follows: </p>
+<p><Start with a initial (default) value of zero (0). Add one (1) for each occurrence of each of the following:> </p>
+]]></description>
+    <tag>bug</tag>
+    <param>
+      <key>maxMethodComplexity</key>
+      <description><![CDATA[The maximum <cognitive complexity> value allowed for a single method (or "block"). If zero or <null>, then do not check method-level complexity. ]]></description>
+      <defaultValue>7</defaultValue>
+    </param>
+  </rule>
+
+  <rule>
+    <key>org.codenarc.rule.gosu.GosuCyclomaticComplexityRule</key>
+    <severity>MINOR</severity>
+    <name><![CDATA[Cyclomatic Complexity]]></name>
+    <internalKey><![CDATA[GosuCyclomaticComplexity]]></internalKey>
+    <description><![CDATA[<p>Calculates the <Cyclomatic Complexity> for methods/classes and checks against configured threshold values. </p>
+<p>The <code>maxMethodComplexity</code> property holds the threshold value for the cyclomatic complexity value for each method. If this value is non-zero, a method with a cyclomatic complexity value greater than this value is considered a violation. </p>
+ The <cyclomatic complexity> value is calculated as follows: </p>
+<p><Start with a initial (default) value of one (1). Add one (1) for each occurrence of each of the following:> </p>
+]]></description>
+    <tag>bug</tag>
+    <param>
+      <key>maxMethodComplexity</key>
+      <description><![CDATA[The maximum <cyclomatic complexity> value allowed for a single method (or "closure field"). If zero or <null>, then do not check method-level complexity. ]]></description>
+      <defaultValue>20</defaultValue>
+    </param>
+  </rule>
+
+  <rule>
+    <key>org.codenarc.rule.gosu.GosuFunctionSizeRule</key>
+    <severity>MAJOR</severity>
+    <name><![CDATA[Method Size]]></name>
+    <internalKey><![CDATA[GosuFunctionSize]]></internalKey>
+    <description><![CDATA[<p>Checks if the size of a function exceeds the number of lines specified by the <code>maxLines</code> property. </p>
+<p>Known Limitations: </p>
+]]></description>
+    <tag>bug</tag>
+    <param>
+      <key>maxLines</key>
+      <description><![CDATA[The maximum number of lines allowed in a function definition. ]]></description>
+      <defaultValue>25</defaultValue>
+    </param>
+  </rule>
+
+  <rule>
+    <key>org.codenarc.rule.gosu.GosuFunctionParameterLengthRule</key>
+    <severity>MINOR</severity>
+    <name><![CDATA[Parameter Count]]></name>
+    <internalKey><![CDATA[GosuFunctionParameterLength]]></internalKey>
+    <description><![CDATA[<p>Checks if the number of parameters in function exceeds the number of parameters specified by the maxParameters property. </p>
+<p>Example of violations: </p>
+<pre>
+    function void someFunction(arg1 : int, arg2 : int, arg3 : int, arg4: int, arg5 : int, arg6: int ) { // violation
+    }
+</pre>
+]]></description>
+    <tag>bug</tag>
+    <param>
+      <key>maxParameters</key>
+      <description><![CDATA[The maximum number of parameters in a function ]]></description>
+      <defaultValue>5</defaultValue>
+    </param>
+  </rule>
+
+  <rule>
+    <key>org.codenarc.rule.gosu.GosuCommentedOutCodeRule</key>
+    <severity>MAJOR</severity>
+    <name><![CDATA[Commented Out Code]]></name>
+    <internalKey><![CDATA[GosuCommentedOutCode]]></internalKey>
+    <description><![CDATA[<p>Avoid commented out code. It's distracting and takes away from readability of the code.</p>
+<p>Examples of violations include: </p>
+<pre>
+    /**
+    if (false || value) { .. }
+    return value && Boolean.FALSE
+    **/
+</pre>
+]]></description>
+    <tag>clumsy</tag>
+  </rule>
+
+  <rule>
+    <key>org.codenarc.rule.gosu.GosuFindStatementRule</key>
+    <severity>MAJOR</severity>
+    <name><![CDATA[find statement]]></name>
+    <internalKey><![CDATA[GosuFindStatement]]></internalKey>
+    <description><![CDATA[<p>Avoid performance intensive find statement. Use query builders instead.</p>
+<p>Examples of violations include: </p>
+<pre>
+    find(...)
+</pre>
+]]></description>
+    <tag>clumsy</tag>
+  </rule>
+
+  <rule>
+    <key>org.codenarc.rule.gosu.GosuGetCountUsageRule</key>
+    <severity>MAJOR</severity>
+    <name><![CDATA[Incorrect use of getCount() == 0]]></name>
+    <internalKey><![CDATA[GosuGetCountUsage]]></internalKey>
+    <description><![CDATA[<p>Incorrect use of getCount() == 0</p>
+<p>Examples of violations include: </p>
+<pre>
+    getCount() == 0
+</pre>
+]]></description>
+    <tag>clumsy</tag>
+  </rule>
+
+  <rule>
+    <key>org.codenarc.rule.gosu.GosuIllegalImportsRule</key>
+    <severity>MAJOR</severity>
+    <name><![CDATA[Incorrect use of uses statement]]></name>
+    <internalKey><![CDATA[GosuIllegalImports]]></internalKey>
+    <description><![CDATA[<p>Incorrect use of uses statement</p>
+<p>Examples of violations include: </p>
+<pre>
+    uses x.y.z.*
+</pre>
+]]></description>
+    <tag>clumsy</tag>
+  </rule>
+
+  <rule>
+    <key>org.codenarc.rule.gosu.GosuInternalImportsRule</key>
+    <severity>MAJOR</severity>
+    <name><![CDATA[Incorrect use of internal Guidewire classes]]></name>
+    <internalKey><![CDATA[GosuInternalImports]]></internalKey>
+    <description><![CDATA[<p>Incorrect use of internal Guidewire classes</p>
+<p>Examples of violations include: </p>
+<pre>
+    uses com.guidewire.*
+</pre>
+]]></description>
+    <tag>clumsy</tag>
+  </rule>
+
+  <rule>
+    <key>org.codenarc.rule.gosu.GosuJavaStyleLineEndingRule</key>
+    <severity>MAJOR</severity>
+    <name><![CDATA[Incorrect use of semicolon (;)]]></name>
+    <internalKey><![CDATA[GosuJavaStyleLineEnding]]></internalKey>
+    <description><![CDATA[<p>Incorrect use of semicolon (;)</p>
+<p>Examples of violations include: </p>
+<pre>
+    var i = 23;
+</pre>
+]]></description>
+    <tag>clumsy</tag>
+  </rule>
+
+  <rule>
+    <key>org.codenarc.rule.gosu.GosuObjectEqualityRule</key>
+    <severity>MAJOR</severity>
+    <name><![CDATA[Incorrect use object equality]]></name>
+    <internalKey><![CDATA[GosuObjectEquality]]></internalKey>
+    <description><![CDATA[<p>Incorrect usage of checking for object equality by using Objects themselves instead of PublicID</p>
+<p>Examples of violations include: </p>
+<pre>
+    if(myGroup == Group("pc:123")) {...}
+</pre>
+]]></description>
+    <tag>clumsy</tag>
+  </rule>
+
+</rules>
