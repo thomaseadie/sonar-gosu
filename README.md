@@ -28,7 +28,7 @@ GMetrics | 0.2 | 0.2 | 0.3  | 0.3  | 0.4    | 0.5  | 0.6  | 0.6  | 0.7   | 0.7  
 It is possible to reuse a previously generated report from CodeNarc by setting the `sonar.gosu.codenarc.reportPath` property.
 
 *Gosu File Suffixes*
-It is possible to define multiple gosu file suffixes to be recognized by setting the `sonar.gosu.file.suffixes` property. Note that by default, only files having `.gosu` as extension will be analyzed.
+It is possible to define multiple gosu file suffixes to be recognized by setting the `sonar.gosu.file.suffixes` property. Note that by default, only files having `.gs` or `.gsx` as extension will be analyzed.
 
 *Unit Tests Execution Reports*
 Import unit tests execution reports (JUnit XML format) by setting the sonar.junit.reportsPath property. Default location is _target/surefire-reports_.
