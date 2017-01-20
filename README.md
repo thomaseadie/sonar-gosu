@@ -3,7 +3,7 @@ Sonar Gosu
 
 ### Build status
 
-[![Build Status](https://api.travis-ci.org/SonarQubeCommunity/sonar-gosu.png)](https://travis-ci.org/SonarQubeCommunity/sonar-gosu)
+[![Build Status](https://travis-ci.org/enoviti/sonar-gosu.svg?branch=master)](https://travis-ci.org/enoviti/sonar-gosu)
 
 ## Description
 The plugin enables analysis of Gosu within SonarQube.
