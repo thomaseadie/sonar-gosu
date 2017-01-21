@@ -9,7 +9,7 @@ addons:
       - oracle-java8-installer
 
 install: true
-script: mvn verify -B -e -V
+script: mvn verify -B -e -V -DskipTests=true
 
 matrix:
   fast_finish: true
