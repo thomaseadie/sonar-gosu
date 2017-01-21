@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.sonarsource.parent</groupId>
     <artifactId>parent</artifactId>
-    <version>36</version>
+    <version>38</version>
   </parent>
 
   <groupId>org.sonarsource.gosu</groupId>
@@ -14,7 +14,7 @@
   <packaging>pom</packaging>
 
   <name>Sonar Gosu</name>
-  <inceptionYear>2017</inceptionYear>
+  <inceptionYear>2016</inceptionYear>
   <organization>
     <name>SonarSource</name>
     <url>http://www.sonarsource.com</url>
@@ -48,14 +48,14 @@
   </modules>
 
   <scm>
-    <connection>scm:git:git@github.com:SonarSource/sonar-gosu.git</connection>
-    <developerConnection>scm:git:git@github.com:SonarSource/sonar-gosu.git</developerConnection>
-    <url>https://github.com/SonarSource/sonar-gosu</url>
+    <connection>scm:git@github.com:enoviti/sonar-gosu.git</connection>
+    <developerConnection>scm:git@github.com:enoviti/sonar-gosu.git</developerConnection>
+    <url>https://github.com/enoviti/sonar-gosu</url>
     <tag>HEAD</tag>
   </scm>
   <issueManagement>
-    <system>JIRA</system>
-    <url>http://jira.sonarsource.com/browse/SONARGROOV</url>
+    <system>GITHUB</system>
+    <url>https://github.com/enoviti/sonar-gosu/issues</url>
   </issueManagement>
   
   <properties>
