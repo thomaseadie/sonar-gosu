@@ -8,7 +8,7 @@ addons:
     packages:
       - oracle-java8-installer
 
-install: false
+install: true
 script: mvn verify -B -e -V
 
 matrix:
