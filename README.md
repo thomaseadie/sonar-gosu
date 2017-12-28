@@ -18,7 +18,7 @@ GMetrics | 0.2 | 0.2 | 0.3  | 0.3  | 0.4    | 0.5  | 0.6  | 0.6  | 0.7   | 0.7  
 ## Steps to Analyze a Gosu Project
 1. Install SonarQube Server
 1. Install SonarQube Scanner and be sure you can call `sonar-scanner` from the directory where you have your source code
-1. Install the Gosu Plugin.
+1. Install the Gosu Plugin on SonarQube Server in `${SONARQUBE_HOME}/extensions/plugins`
 1. Create a _sonar-project.properties_ file at the root of your project
 1. Run `sonar-scanner` command from the project root dir
 1. Follow the link provided at the end of the analysis to browse your project's quality in SonarQube UI
