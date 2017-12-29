@@ -15,6 +15,9 @@ Plugin   | 0.1 | 0.2 | 0.3  | 0.4  | 0.5    | 0.6  | 1.0  | 1.1  | 1.1.1 | 1.2  
 CodeNarc | 0.9 | 0.9 | 0.13 | 0.15 | 0.16.1 | 0.17 | 0.20 | 0.23 | 0.23  | 0.24 | 0.24.1 | 0.24.1 | 0.25.2
 GMetrics | 0.2 | 0.2 | 0.3  | 0.3  | 0.4    | 0.5  | 0.6  | 0.6  | 0.7   | 0.7  | 0.7    | 0.7    | 0.7
 
+## Requirements
+ - SonarQube >= 5.6
+
 ## Steps to Analyze a Gosu Project
 1. Install SonarQube Server
 1. Install SonarQube Scanner and be sure you can call `sonar-scanner` from the directory where you have your source code
