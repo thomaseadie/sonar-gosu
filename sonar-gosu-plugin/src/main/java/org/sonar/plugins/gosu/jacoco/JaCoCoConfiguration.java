@@ -22,16 +22,16 @@ package org.sonar.plugins.gosu.jacoco;
 import com.google.common.collect.ImmutableList;
 
 import org.sonar.api.PropertyType;
-import org.sonar.api.batch.BatchSide;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.config.PropertyDefinition;
 import org.sonar.api.config.Settings;
 import org.sonar.api.resources.Qualifiers;
+import org.sonar.api.scanner.ScannerSide;
 import org.sonar.plugins.gosu.foundation.Gosu;
 
 import java.util.List;
 
-@BatchSide
+@ScannerSide
 public class JaCoCoConfiguration {
 
   public static final String REPORT_PATH_PROPERTY = "sonar.gosu.jacoco.reportPath";

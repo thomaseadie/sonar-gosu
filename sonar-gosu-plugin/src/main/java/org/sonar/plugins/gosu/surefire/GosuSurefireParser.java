@@ -22,7 +22,7 @@ package org.sonar.plugins.gosu.surefire;
 import com.google.common.collect.Lists;
 
 import org.apache.commons.lang.StringUtils;
-import org.sonar.api.batch.BatchSide;
+import org.sonar.api.batch.ScannerSide;
 import org.sonar.api.batch.fs.FilePredicate;
 import org.sonar.api.batch.fs.FilePredicates;
 import org.sonar.api.batch.fs.FileSystem;
@@ -51,7 +51,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-@BatchSide
+@ScannerSide
 public class GosuSurefireParser {
 
   private static final Logger LOGGER = Loggers.get(GosuSurefireParser.class);

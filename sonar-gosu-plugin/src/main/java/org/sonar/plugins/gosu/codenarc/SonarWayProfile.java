@@ -19,20 +19,34 @@
  */
 package org.sonar.plugins.gosu.codenarc;
 
-import org.sonar.api.profiles.ProfileDefinition;
-import org.sonar.api.profiles.RulesProfile;
-import org.sonar.api.profiles.XMLProfileParser;
-import org.sonar.api.utils.ValidationMessages;
+import org.sonar.api.server.profile.BuiltInQualityProfilesDefinition;
+import org.sonarsource.analyzer.commons.BuiltInQualityProfileJsonLoader;
+import org.sonar.api.SonarRuntime;
 
-public class SonarWayProfile extends ProfileDefinition {
-  private XMLProfileParser xmlProfileParser;
 
-  public SonarWayProfile(XMLProfileParser xmlProfileParser) {
-    this.xmlProfileParser = xmlProfileParser;
+import static org.sonar.plugins.gosu.codenarc.CodeNarcRulesDefinition.*;
+//import org.sonar.api.utils.ValidationMessages;
+
+/**
+ * Sonar way profile for the Gosu language
+ */
+public final class SonarWayProfile implements BuiltInQualityProfilesDefinition {
+
+  private static final String NAME = "Sonar way";
+  public static final String JSON_PROFILE_PATH = RESOURCE_BASE_PATH + "/Sonar_way_profile.json";
+
+
+  private final SonarRuntime sonarRuntime;
+
+  public SonarWayProfile(SonarRuntime sonarRuntime) {
+    this.sonarRuntime = sonarRuntime;
   }
 
   @Override
-  public RulesProfile createProfile(ValidationMessages messages) {
-    return xmlProfileParser.parseResource(getClass().getClassLoader(), "org/sonar/plugins/gosu/profile-sonar-way.xml", messages);
+  public void define(Context context) {
+    NewBuiltInQualityProfile profile = context.createBuiltInQualityProfile(NAME, LANGUAGE_KEY);
+    BuiltInQualityProfileJsonLoader.load(profile, REPOSITORY_KEY, JSON_PROFILE_PATH, RESOURCE_BASE_PATH, sonarRuntime);
+    profile.done();
   }
+
 }

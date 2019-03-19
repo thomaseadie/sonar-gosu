@@ -28,12 +28,13 @@ import org.codenarc.rule.Violation;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.rule.ActiveRule;
+import org.sonar.api.batch.rule.ActiveRules;
 import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.SensorDescriptor;
 import org.sonar.api.batch.sensor.issue.NewIssue;
 import org.sonar.api.batch.sensor.issue.NewIssueLocation;
-import org.sonar.api.profiles.RulesProfile;
+//import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
@@ -59,12 +60,12 @@ public class CodeNarcSensor implements Sensor {
   private static final Logger LOG = Loggers.get(CodeNarcSensor.class);
 
   private final FileSystem fileSystem;
-  private final RulesProfile rulesProfile;
+  private final ActiveRules rulesProfile;
   private final GosuFileSystem gosuFileSystem;
 
   private final String codeNarcReportPath;
 
-  public CodeNarcSensor(Gosu gosu, FileSystem fileSystem, RulesProfile profile) {
+  public CodeNarcSensor(Gosu gosu, FileSystem fileSystem, ActiveRules profile) {
     this.fileSystem = fileSystem;
     this.rulesProfile = profile;
     this.gosuFileSystem = new GosuFileSystem(fileSystem);

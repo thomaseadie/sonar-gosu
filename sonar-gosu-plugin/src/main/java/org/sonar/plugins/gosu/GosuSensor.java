@@ -39,6 +39,7 @@ import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.SensorDescriptor;
 import org.sonar.api.ce.measure.RangeDistributionBuilder;
+import org.sonar.api.config.Configuration;
 import org.sonar.api.config.Settings;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.FileLinesContext;
@@ -82,7 +83,7 @@ public class GosuSensor implements Sensor {
 
   private static final Set<String> EMPTY_COMMENT_LINES = Arrays.stream(new String[] {"/**", "/*", "*", "*/", "//"}).collect(Collectors.toSet());
 
-  private final Settings settings;
+  private final Configuration settings;
   private final FileLinesContextFactory fileLinesContextFactory;
   private final GosuFileSystem gosuFileSystem;
 
@@ -91,7 +92,7 @@ public class GosuSensor implements Sensor {
   private int currentLine = 0;
   private FileLinesContext fileLinesContext;
 
-  public GosuSensor(Settings settings, FileLinesContextFactory fileLinesContextFactory, FileSystem fileSystem) {
+  public GosuSensor(Configuration settings, FileLinesContextFactory fileLinesContextFactory, FileSystem fileSystem) {
     this.settings = settings;
     this.fileLinesContextFactory = fileLinesContextFactory;
     this.gosuFileSystem = new GosuFileSystem(fileSystem);
@@ -290,7 +291,7 @@ public class GosuSensor implements Sensor {
   }
 
   private boolean isNotHeaderComment(int tokenLine) {
-    return !(tokenLine == 1 && settings.getBoolean(GosuPlugin.IGNORE_HEADER_COMMENTS));
+    return !(tokenLine == 1 );
   }
 
   private static boolean isNotWhitespace(int tokenType) {
