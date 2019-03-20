@@ -33,7 +33,7 @@ public class GosuPluginTest {
   @Test
   public void testExtensions() {
     GosuPlugin plugin = new GosuPlugin();
-    Plugin.Context context = new Plugin.Context(SonarRuntimeImpl.forSonarQube(Version.create(7,3), SonarQubeSide.SCANNER));
+    Plugin.Context context = new Plugin.Context(SonarRuntimeImpl.forSonarQube(Version.create(7,6), SonarQubeSide.SCANNER));
     plugin.define(context);
     assertThat(context.getExtensions()).hasSize(16);
   }
