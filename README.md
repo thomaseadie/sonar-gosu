@@ -16,7 +16,7 @@ CodeNarc | 0.9 | 0.9 | 0.13 | 0.15 | 0.16.1 | 0.17 | 0.20 | 0.23 | 0.23  | 0.24 
 GMetrics | 0.2 | 0.2 | 0.3  | 0.3  | 0.4    | 0.5  | 0.6  | 0.6  | 0.7   | 0.7  | 0.7    | 0.7    | 0.7
 
 ## Requirements
- - SonarQube >= 5.6
+ - SonarQube >= 7.6
 
 ## Steps to Analyze a Gosu Project
 1. Install SonarQube Server

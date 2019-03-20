@@ -10,7 +10,7 @@
 
   <groupId>org.sonarsource.gosu</groupId>
   <artifactId>gosu</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>2.0</version>
   <packaging>pom</packaging>
 
   <name>Sonar Gosu</name>
@@ -40,6 +40,10 @@
       <id>anshumanpurohit</id>
       <name>Anshuman Purohit</name>
     </developer>
+    <developer>
+      <id>TheToddLuci0</id>
+      <name>Logan Woolery</name>
+    </developer>
   </developers>
 
   <modules>
@@ -48,14 +52,14 @@
   </modules>
 
   <scm>
-    <connection>scm:git@github.com:enoviti/sonar-gosu.git</connection>
-    <developerConnection>scm:git@github.com:enoviti/sonar-gosu.git</developerConnection>
-    <url>https://github.com/enoviti/sonar-gosu</url>
+    <connection>scm:git@github.com:TheToddLuci0/sonar-gosu.git</connection>
+    <developerConnection>scm:git@github.com:TheToddLuci0/sonar-gosu.git</developerConnection>
+    <url>https://github.com/TheToddLuci0/sonar-gosu</url>
     <tag>HEAD</tag>
   </scm>
   <issueManagement>
     <system>GITHUB</system>
-    <url>https://github.com/enoviti/sonar-gosu/issues</url>
+    <url>https://github.com/TheToddLuci0/sonar-gosu/issues</url>
   </issueManagement>
   
   <properties>
