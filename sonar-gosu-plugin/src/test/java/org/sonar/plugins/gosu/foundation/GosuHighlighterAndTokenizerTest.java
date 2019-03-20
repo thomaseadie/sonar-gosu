@@ -19,10 +19,12 @@
  */
 package org.sonar.plugins.gosu.foundation;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.sonar.api.batch.fs.InputFile.Type;
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
+import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.sensor.highlighting.TypeOfText;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.test.TestUtils;
@@ -36,13 +38,14 @@ public class GosuHighlighterAndTokenizerTest {
 
   @Test
   public void should_highlight_keywords() throws Exception {
-    File file = TestUtils.getResource("/org/sonar/plugins/gosu/foundation/Greet.groovy");
+    File file = FileUtils.toFile(TestUtils.class.getResource("/org/sonar/plugins/gosu/foundation/Greet.groovy"));
 
     SensorContextTester context = SensorContextTester.create(file.getParentFile());
-    DefaultInputFile inputFile = new DefaultInputFile("", "Greet.groovy")
+    DefaultInputFile inputFile = new TestInputFileBuilder("", "Greet.groovy")
       .setLanguage(Gosu.KEY)
       .setType(Type.MAIN)
-      .initMetadata(new String(Files.readAllBytes(file.toPath()), "UTF-8"));
+      .initMetadata(new String(Files.readAllBytes(file.toPath()), "UTF-8"))
+            .build();
     context.fileSystem().add(inputFile);
 
     GosuHighlighterAndTokenizer highlighter = new GosuHighlighterAndTokenizer(inputFile);
@@ -67,12 +70,13 @@ public class GosuHighlighterAndTokenizerTest {
 
   @Test
   public void should_highlight_nothing_if_file_is_missing() throws Exception {
-    File file = TestUtils.getResource("/org/sonar/plugins/gosu/foundation/Greet.groovy");
+    File file = FileUtils.toFile(TestUtils.class.getResource("/org/sonar/plugins/gosu/foundation/Greet.groovy"));
 
     SensorContextTester context = SensorContextTester.create(file.getParentFile());
-    DefaultInputFile inputFile = new DefaultInputFile("", "Greet-fake.groovy")
+    DefaultInputFile inputFile = new TestInputFileBuilder("", "Greet-fake.groovy")
       .setLanguage(Gosu.KEY)
-      .setType(Type.MAIN);
+      .setType(Type.MAIN)
+            .build();
     context.fileSystem().add(inputFile);
 
     GosuHighlighterAndTokenizer highlighter = new GosuHighlighterAndTokenizer(inputFile);
@@ -85,13 +89,14 @@ public class GosuHighlighterAndTokenizerTest {
 
   @Test
   public void should_highlight_only_partially_if_file_can_not_be_lexed() throws Exception {
-    File file = TestUtils.getResource("/org/sonar/plugins/gosu/foundation/Error.groovy");
+    File file = FileUtils.toFile(TestUtils.class.getResource("/org/sonar/plugins/gosu/foundation/Error.groovy"));
 
     SensorContextTester context = SensorContextTester.create(file.getParentFile());
-    DefaultInputFile inputFile = new DefaultInputFile("", "Error.groovy")
+    DefaultInputFile inputFile = new TestInputFileBuilder("", "Error.groovy")
       .setLanguage(Gosu.KEY)
       .setType(Type.MAIN)
-      .initMetadata(new String(Files.readAllBytes(file.toPath()), "UTF-8"));
+      .initMetadata(new String(Files.readAllBytes(file.toPath()), "UTF-8"))
+            .build();
     context.fileSystem().add(inputFile);
 
     GosuHighlighterAndTokenizer highlighter = new GosuHighlighterAndTokenizer(inputFile);

@@ -19,6 +19,7 @@
  */
 package org.sonar.plugins.gosu.jacoco;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -55,8 +56,8 @@ public class JaCoCoReportMergerTest {
   }
 
   private void merge(String file1, String file2) {
-    File current = TestUtils.getResource("/org/sonar/plugins/gosu/jacoco/JaCoCo_incompatible_merge/" + file1);
-    File previous = TestUtils.getResource("/org/sonar/plugins/gosu/jacoco/JaCoCo_incompatible_merge/" + file2);
+    File current = FileUtils.toFile(TestUtils.class.getResource("/org/sonar/plugins/gosu/jacoco/JaCoCo_incompatible_merge/" + file1));
+    File previous = FileUtils.toFile(TestUtils.class.getResource("/org/sonar/plugins/gosu/jacoco/JaCoCo_incompatible_merge/" + file2));
     JaCoCoReportMerger.mergeReports(new File(testFolder.getRoot(), "dummy"), current, previous);
   }
 

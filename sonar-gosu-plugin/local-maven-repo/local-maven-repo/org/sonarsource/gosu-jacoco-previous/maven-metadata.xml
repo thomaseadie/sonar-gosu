@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.sonarsource</groupId>
+  <artifactId>gosu-jacoco-previous</artifactId>
+  <versioning>
+    <versions>
+      <version>1.0-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20180205214726</lastUpdated>
+  </versioning>
+</metadata>

@@ -21,6 +21,8 @@ package org.sonar.plugins.gosu.foundation;
 
 import org.junit.Test;
 import org.sonar.api.config.Settings;
+import org.sonar.api.config.internal.ConfigurationBridge;
+import org.sonar.api.config.internal.MapSettings;
 import org.sonar.plugins.gosu.GosuPlugin;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -29,8 +31,8 @@ public class GosuTest {
 
   @Test
   public void test() {
-    Settings settings = new Settings();
-    Gosu language = new Gosu(settings);
+    Settings settings = new MapSettings();
+    Gosu language = new Gosu(new ConfigurationBridge(settings));
     assertThat(language.getKey()).isEqualTo("gosu");
     assertThat(language.getName()).isEqualTo("Gosu");
     assertThat(language.getFileSuffixes()).isEqualTo(new String[] {".gs", ".gsx"});
@@ -44,8 +46,8 @@ public class GosuTest {
 
   @Test
   public void binaryDirectories() throws Exception {
-    Settings settings = new Settings();
-    Gosu language = new Gosu(settings);
+    Settings settings = new MapSettings();
+    Gosu language = new Gosu(new ConfigurationBridge(settings));
 
     settings.setProperty(GosuPlugin.SONAR_GOSU_BINARIES, "");
     assertThat(language.getBinaryDirectories()).isEmpty();

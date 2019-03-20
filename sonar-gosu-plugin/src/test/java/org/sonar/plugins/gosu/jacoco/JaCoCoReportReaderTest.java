@@ -58,14 +58,14 @@ public class JaCoCoReportReaderTest {
 
   @Test
   public void not_existing_class_files_should_not_be_analyzed_for_current() {
-    File report = TestUtils.getResource("/org/sonar/plugins/gosu/jacoco/JaCoCo_incompatible_merge/jacoco-0.7.5.exec");
+    File report = FileUtils.toFile(TestUtils.class.getResource("/org/sonar/plugins/gosu/jacoco/JaCoCo_incompatible_merge/jacoco-0.7.5.exec"));
     Collection<File> classFile = Lists.newArrayList(dummy);
     new JaCoCoReportReader(report).analyzeFiles(null, classFile);
   }
 
   @Test
   public void not_existing_class_files_should_not_be_analyzed_for_previous() {
-    File report = TestUtils.getResource("/org/sonar/plugins/gosu/jacoco/JaCoCo_incompatible_merge/jacoco-0.7.4.exec");
+    File report = FileUtils.toFile(TestUtils.class.getResource("/org/sonar/plugins/gosu/jacoco/JaCoCo_incompatible_merge/jacoco-0.7.4.exec"));
     Collection<File> classFile = Lists.newArrayList(dummy);
     new JaCoCoReportReader(report).analyzeFiles(null, classFile);
   }
@@ -73,7 +73,7 @@ public class JaCoCoReportReaderTest {
   @Test
   public void analyzing_a_deleted_file_should_fail() throws Exception {
     File report = testFolder.newFile("jacoco.exec");
-    FileUtils.copyFile(TestUtils.getResource("/org/sonar/plugins/gosu/jacoco/JaCoCo_incompatible_merge/jacoco-0.7.5.exec"), report);
+    FileUtils.copyFile(FileUtils.toFile(TestUtils.class.getResource("/org/sonar/plugins/gosu/jacoco/JaCoCo_incompatible_merge/jacoco-0.7.5.exec")), report);
     JaCoCoReportReader jacocoReportReader = new JaCoCoReportReader(report);
     expectedException.expect(IllegalArgumentException.class);
     if (!report.delete()) {
@@ -85,7 +85,7 @@ public class JaCoCoReportReaderTest {
 
   @Test
   public void incorrect_binary_format_should_fail() throws Exception {
-    File report = TestUtils.getResource("/org/sonar/plugins/gosu/jacoco/Hello.class.toCopy");
+    File report = FileUtils.toFile(TestUtils.class.getResource("/org/sonar/plugins/gosu/jacoco/Hello.class.toCopy"));
     expectedException.expect(IllegalArgumentException.class);
     new JaCoCoReportReader(report);
   }

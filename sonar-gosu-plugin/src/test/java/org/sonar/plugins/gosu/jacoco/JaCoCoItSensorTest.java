@@ -22,12 +22,14 @@ package org.sonar.plugins.gosu.jacoco;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
 import org.sonar.api.batch.fs.InputFile.Type;
 import org.sonar.api.batch.fs.internal.DefaultFileSystem;
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
+import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.sensor.coverage.CoverageType;
 import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
@@ -53,12 +55,12 @@ public class JaCoCoItSensorTest {
 
   @Before
   public void setUp() throws Exception {
-    File outputDir = TestUtils.getResource("/org/sonar/plugins/gosu/jacoco/JaCoCoItSensorTests/");
+    File outputDir = FileUtils.toFile(TestUtils.class.getResource("/org/sonar/plugins/gosu/jacoco/JaCoCoItSensorTests/"));
     jacocoExecutionData = new File(outputDir, "jacoco-it.exec");
 
-    Files.copy(TestUtils.getResource("/org/sonar/plugins/gosu/jacoco/Hello.class.toCopy"),
+    Files.copy(FileUtils.toFile(TestUtils.class.getResource("/org/sonar/plugins/gosu/jacoco/Hello.class.toCopy")),
       new File(jacocoExecutionData.getParentFile(), "Hello.class"));
-    Files.copy(TestUtils.getResource("/org/sonar/plugins/gosu/jacoco/Hello$InnerClass.class.toCopy"),
+    Files.copy(FileUtils.toFile(TestUtils.class.getResource("/org/sonar/plugins/gosu/jacoco/Hello$InnerClass.class.toCopy")),
       new File(jacocoExecutionData.getParentFile(), "Hello$InnerClass.class"));
 
     Gosu gosu = mock(Gosu.class);
@@ -70,10 +72,8 @@ public class JaCoCoItSensorTest {
     when(configuration.getItReportPath()).thenReturn(jacocoExecutionData.getPath());
 
     DefaultFileSystem fileSystem = new DefaultFileSystem(jacocoExecutionData.getParentFile());
-    inputFile = new DefaultInputFile("", "example/Hello.groovy")
-      .setLanguage(Gosu.KEY)
-      .setType(Type.MAIN);
-    inputFile.setLines(50);
+    inputFile = TestInputFileBuilder.create("", "example/Hello.groovy").setLanguage(Gosu.KEY)
+      .setType(Type.MAIN).setLines(50).build();
     fileSystem.add(inputFile);
 
     pathResolver = mock(PathResolver.class);
@@ -101,7 +101,7 @@ public class JaCoCoItSensorTest {
     when(pathResolver.relativeFile(any(File.class), eq("it.exec"))).thenReturn(jacocoExecutionData.getParentFile());
     assertThat(sensor.shouldExecuteOnProject()).isFalse();
 
-    File outputDir = TestUtils.getResource(JaCoCoSensorTest.class, ".");
+    File outputDir = FileUtils.toFile(TestUtils.class.getResource("./"+JaCoCoSensorTest.class.getName()));
     File fakeExecFile = new File(outputDir, "it.not.found.exec");
     when(pathResolver.relativeFile(any(File.class), eq("it.exec"))).thenReturn(fakeExecFile);
     assertThat(sensor.shouldExecuteOnProject()).isFalse();
@@ -123,14 +123,14 @@ public class JaCoCoItSensorTest {
     int[] conditionLines = {14, 29, 30};
 
     for (int zeroHitline : zeroHitlines) {
-      assertThat(context.lineHits(":example/Hello.groovy", CoverageType.IT, zeroHitline)).isEqualTo(0);
+      assertThat(context.lineHits(":example/Hello.groovy", zeroHitline)).isEqualTo(0);
     }
     for (int oneHitline : oneHitlines) {
-      assertThat(context.lineHits(":example/Hello.groovy", CoverageType.IT, oneHitline)).isEqualTo(1);
+      assertThat(context.lineHits(":example/Hello.groovy", oneHitline)).isEqualTo(1);
     }
     for (int conditionLine : conditionLines) {
-      assertThat(context.conditions(":example/Hello.groovy", CoverageType.IT, conditionLine)).isEqualTo(2);
-      assertThat(context.coveredConditions(":example/Hello.groovy", CoverageType.IT, conditionLine)).isEqualTo(0);
+      assertThat(context.conditions(":example/Hello.groovy", conditionLine)).isEqualTo(2);
+      assertThat(context.coveredConditions(":example/Hello.groovy", conditionLine)).isEqualTo(0);
     }
   }
 

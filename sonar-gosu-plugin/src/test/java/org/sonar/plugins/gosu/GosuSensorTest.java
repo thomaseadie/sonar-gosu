@@ -22,12 +22,16 @@ package org.sonar.plugins.gosu;
 import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
+import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.fs.internal.DefaultFileSystem;
 import org.sonar.api.batch.fs.internal.DefaultInputDir;
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
+import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.config.Settings;
+import org.sonar.api.config.internal.ConfigurationBridge;
+import org.sonar.api.config.internal.MapSettings;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.FileLinesContext;
 import org.sonar.api.measures.FileLinesContextFactory;
@@ -44,16 +48,16 @@ import static org.mockito.Mockito.when;
 
 public class GosuSensorTest {
 
-  private Settings settings = new Settings();
+  private Settings settings = new MapSettings();
   private FileLinesContextFactory fileLinesContextFactory = mock(FileLinesContextFactory.class);
   private DefaultFileSystem fileSystem = new DefaultFileSystem(new File("."));
-  private GosuSensor sensor = new GosuSensor(settings, fileLinesContextFactory, fileSystem);
+  private GosuSensor sensor = new GosuSensor(new ConfigurationBridge(settings), fileLinesContextFactory, fileSystem);
 
   @Test
   public void do_nothing_when_no_gosu_file() throws IOException {
     SensorContextTester context = SensorContextTester.create(new File(""));
     context = Mockito.spy(context);
-    sensor = new GosuSensor(settings, fileLinesContextFactory, context.fileSystem());
+    sensor = new GosuSensor(new ConfigurationBridge(settings), fileLinesContextFactory, context.fileSystem());
     sensor.execute(context);
 
     Mockito.verify(context, Mockito.never()).newHighlighting();
@@ -76,17 +80,18 @@ public class GosuSensorTest {
 
     File sourceFile = new File(sourceDir, "Greeting.groovy");
     fileSystem = context.fileSystem();
-    fileSystem.add(new DefaultInputDir("", sourceDir.getPath()));
-    DefaultInputFile gosuFile = new DefaultInputFile("", sourceFile.getPath())
+    fileSystem.add(new TestInputFileBuilder("", sourceDir.getPath()).build());
+    DefaultInputFile gosuFile = new TestInputFileBuilder("", sourceFile.getPath())
       .setLanguage(Gosu.KEY)
-      .initMetadata(new String(Files.readAllBytes(sourceFile.toPath()), "UTF-8"));
+      .initMetadata(new String(Files.readAllBytes(sourceFile.toPath()), "UTF-8"))
+            .build();
     fileSystem.add(gosuFile);
-    fileSystem.add(new DefaultInputFile("", "unknownFile.groovy").setLanguage(Gosu.KEY));
+    fileSystem.add(new TestInputFileBuilder("", "unknownFile.groovy").setLanguage(Gosu.KEY).build());
 
     FileLinesContext fileLinesContext = mock(FileLinesContext.class);
     when(fileLinesContextFactory.createFor(any(DefaultInputFile.class))).thenReturn(fileLinesContext);
 
-    sensor = new GosuSensor(settings, fileLinesContextFactory, fileSystem);
+    sensor = new GosuSensor(new ConfigurationBridge(settings), fileLinesContextFactory, fileSystem);
     sensor.execute(context);
 
     String key = gosuFile.key();
@@ -129,7 +134,7 @@ public class GosuSensorTest {
     FileLinesContext fileLinesContext = mock(FileLinesContext.class);
     when(fileLinesContextFactory.createFor(any(DefaultInputFile.class))).thenReturn(fileLinesContext);
 
-    sensor = new GosuSensor(settings, fileLinesContextFactory, fileSystem);
+    sensor = new GosuSensor(new ConfigurationBridge(settings), fileLinesContextFactory, fileSystem);
     sensor.execute(context);
 
     assertCouplingMeasureAre(context, org.key(), 3, 1.0, 3, 1.0);
@@ -148,11 +153,11 @@ public class GosuSensorTest {
   private DefaultInputDir addFileWithParentFolder(String dirPath, String fileName) throws IOException {
     File dir = new File(dirPath);
     File file = new File(dir, fileName);
-    DefaultInputDir inputDir = new DefaultInputDir("", dir.getPath());
-    fileSystem.add(inputDir);
-    fileSystem.add(new DefaultInputFile("", file.getPath())
+    DefaultInputDir inputDir = new DefaultInputDir("", dir.toString());
+    fileSystem.add((InputFile) inputDir);
+    fileSystem.add(new TestInputFileBuilder("", file.getPath())
       .setLanguage(Gosu.KEY)
-      .initMetadata(new String(Files.readAllBytes(file.toPath()), "UTF-8")));
+      .initMetadata(new String(Files.readAllBytes(file.toPath()), "UTF-8")).build());
     return inputDir;
   }
 

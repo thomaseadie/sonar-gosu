@@ -34,11 +34,14 @@ import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.fs.InputFile.Type;
 import org.sonar.api.batch.fs.internal.DefaultFileSystem;
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
+import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.rule.ActiveRules;
 import org.sonar.api.batch.rule.internal.ActiveRulesBuilder;
+import org.sonar.api.batch.rule.internal.NewActiveRule;
 import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.config.Settings;
+import org.sonar.api.config.internal.ConfigurationBridge;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.api.rules.ActiveRule;
@@ -62,7 +65,7 @@ import static org.mockito.Mockito.when;
 
 public class CodeNarcSensorTest {
 
-  private RulesProfile profile;
+  private ActiveRules profile;
   private CodeNarcSensor sensor;
   private Gosu gosu;
   private Settings settings;
@@ -75,19 +78,19 @@ public class CodeNarcSensorTest {
   public void setUp() {
     File sonarhome = projectdir.newFolder("sonarhome");
 
-    profile = mock(RulesProfile.class);
+    profile = mock(ActiveRules.class);
     settings = mock(Settings.class);
     when(settings.getStringArray(GosuPlugin.FILE_SUFFIXES_KEY)).thenReturn(new String[] {".groovy", "groovy"});
     fileSystem = new DefaultFileSystem(new File("."));
-    fileSystem.setWorkDir(sonarhome);
-    gosu = new Gosu(settings);
+    fileSystem.setWorkDir(sonarhome.toPath());
+    gosu = new Gosu(new ConfigurationBridge(settings));
 
     sensor = new CodeNarcSensor(gosu, fileSystem, profile);
   }
 
   @Test
   public void should_execute_on_project() {
-    fileSystem.add(new DefaultInputFile("", "fake.groovy").setLanguage(Gosu.KEY));
+    fileSystem.add(new TestInputFileBuilder("", "fake.groovy").setLanguage(Gosu.KEY).build());
 
     ActiveRules activeRules = mock(ActiveRules.class);
     when(activeRules.findByRepository(CodeNarcRulesDefinition.REPOSITORY_KEY))
@@ -102,7 +105,7 @@ public class CodeNarcSensorTest {
 
   @Test
   public void should_not_execute_when_no_active_rules() {
-    fileSystem.add(new DefaultInputFile("", "fake.groovy").setLanguage(Gosu.KEY));
+    fileSystem.add(new TestInputFileBuilder("", "fake.groovy").setLanguage(Gosu.KEY).build());
 
     ActiveRules activeRules = mock(ActiveRules.class);
     when(activeRules.findByRepository(CodeNarcRulesDefinition.REPOSITORY_KEY)).thenReturn(new ArrayList<>());
@@ -166,7 +169,8 @@ public class CodeNarcSensorTest {
   }
 
   private static ActiveRulesBuilder activateRule(ActiveRulesBuilder activeRulesBuilder, String ruleKey, String internalKey) {
-    return activeRulesBuilder.create(RuleKey.of(CodeNarcRulesDefinition.REPOSITORY_KEY, ruleKey)).setInternalKey(internalKey).activate();
+//    return activeRulesBuilder.create(RuleKey.of(CodeNarcRulesDefinition.REPOSITORY_KEY, ruleKey)).setInternalKey(internalKey).activate();
+    return activeRulesBuilder.addRule(new NewActiveRule.Builder().setRuleKey(RuleKey.of(CodeNarcRulesDefinition.REPOSITORY_KEY, ruleKey)).setInternalKey(internalKey).build());
   }
 
   @Test
@@ -201,7 +205,7 @@ public class CodeNarcSensorTest {
     when(settings.getString(GosuPlugin.CODENARC_REPORT_PATH)).thenReturn(report.getAbsolutePath());
 
     DefaultFileSystem fileSystem = new DefaultFileSystem(new File(""));
-    fileSystem.add(new DefaultInputFile("", "unknownFile.groovy").setLanguage(Gosu.KEY).setType(Type.MAIN));
+    fileSystem.add(new TestInputFileBuilder("", "unknownFile.groovy").setLanguage(Gosu.KEY).setType(Type.MAIN).build());
     context.setFileSystem(fileSystem);
 
     sensor = new CodeNarcSensor(gosu, fileSystem, profile);
@@ -216,23 +220,24 @@ public class CodeNarcSensorTest {
     SensorContextTester context = SensorContextTester.create(sonarhome);
 
     File sample = createSampleFile(sonarhome);
-    DefaultInputFile inputFile = new DefaultInputFile("", "sample.groovy")
+    DefaultInputFile inputFile = new TestInputFileBuilder("", "sample.groovy")
       .setLanguage(Gosu.KEY)
       .setType(Type.MAIN)
-      .initMetadata(new String(Files.readAllBytes(sample.toPath()), "UTF-8"));
+      .initMetadata(new String(Files.readAllBytes(sample.toPath()), "UTF-8"))
+            .build();
 
     ActiveRulesBuilder activeRulesBuilder = new ActiveRulesBuilder();
     activeRulesBuilder = activateRule(activeRulesBuilder, "org.codenarc.rule.basic.EmptyClassRule", "EmptyClass");
     context.setActiveRules(activeRulesBuilder.build());
 
     DefaultFileSystem fileSystem = new DefaultFileSystem(sonarhome);
-    fileSystem.setWorkDir(sonarhome);
+    fileSystem.setWorkDir(sonarhome.toPath());
     fileSystem.add(inputFile);
     context.setFileSystem(fileSystem);
 
     ActiveRule activeRule = mock(ActiveRule.class);
     when(activeRule.getRuleKey()).thenReturn("org.codenarc.rule.basic.EmptyClassRule");
-    when(profile.getActiveRulesByRepository(CodeNarcRulesDefinition.REPOSITORY_KEY)).thenReturn(Arrays.asList(activeRule));
+    when(profile.findByRepository(CodeNarcRulesDefinition.REPOSITORY_KEY)).thenReturn(Arrays.asList((org.sonar.api.batch.rule.ActiveRule) activeRule));
     when(settings.getString(GosuPlugin.CODENARC_REPORT_PATH)).thenReturn("");
 
     sensor = new CodeNarcSensor(gosu, fileSystem, profile);
@@ -247,7 +252,7 @@ public class CodeNarcSensorTest {
 
     when(settings.getString(GosuPlugin.CODENARC_REPORT_PATH)).thenReturn("../missing_file.xml");
 
-    DefaultInputFile inputFile = new DefaultInputFile("", "sample.gosu").setLanguage(Gosu.KEY).setType(Type.MAIN);
+    DefaultInputFile inputFile = new TestInputFileBuilder("", "sample.gosu").setLanguage(Gosu.KEY).setType(Type.MAIN).build();
 
     ActiveRulesBuilder activeRulesBuilder = new ActiveRulesBuilder();
     activeRulesBuilder = activateRule(activeRulesBuilder, "org.codenarc.rule.basic.EmptyClassRule", "EmptyClass");
@@ -276,19 +281,21 @@ public class CodeNarcSensorTest {
     context.setActiveRules(activeRulesBuilder.build());
 
     DefaultFileSystem fileSystem = context.fileSystem();
-    fileSystem.setWorkDir(sonarhome);
-    fileSystem.add(new DefaultInputFile("", "sample.groovy")
+    fileSystem.setWorkDir(sonarhome.toPath());
+    fileSystem.add(new TestInputFileBuilder("", "sample.groovy")
       .setLanguage(Gosu.KEY)
       .setType(Type.MAIN)
-      .initMetadata(new String(Files.readAllBytes(sample1.toPath()), "UTF-8")));
-    fileSystem.add(new DefaultInputFile("", "foo/bar/qix/sample.groovy")
+      .initMetadata(new String(Files.readAllBytes(sample1.toPath()), "UTF-8"))
+    .build());
+    fileSystem.add(new TestInputFileBuilder("", "foo/bar/qix/sample.groovy")
       .setLanguage(Gosu.KEY)
       .setType(Type.MAIN)
-      .initMetadata(new String(Files.readAllBytes(sample2.toPath()), "UTF-8")));
+      .initMetadata(new String(Files.readAllBytes(sample2.toPath()), "UTF-8"))
+            .build());
 
     ActiveRule activeRule = mock(ActiveRule.class);
     when(activeRule.getRuleKey()).thenReturn("org.codenarc.rule.basic.EmptyClassRule");
-    when(profile.getActiveRulesByRepository(CodeNarcRulesDefinition.REPOSITORY_KEY)).thenReturn(Arrays.asList(activeRule));
+    when(profile.findByRepository(CodeNarcRulesDefinition.REPOSITORY_KEY)).thenReturn(Arrays.asList((org.sonar.api.batch.rule.ActiveRule) activeRule));
     when(settings.getString(GosuPlugin.CODENARC_REPORT_PATH)).thenReturn("");
 
     sensor = new CodeNarcSensor(gosu, fileSystem, profile);
@@ -330,7 +337,7 @@ public class CodeNarcSensorTest {
     when(fp.hasAbsolutePath(Matchers.anyString())).thenAnswer(new Answer<FilePredicate>() {
       @Override
       public FilePredicate answer(InvocationOnMock invocation) throws Throwable {
-        return new CustomFilePredicate(invocation.getArgumentAt(0, String.class));
+        return new CustomFilePredicate(invocation.getArgument(0, String.class));
       }
     });
 
@@ -344,14 +351,15 @@ public class CodeNarcSensorTest {
     when(mockfileSystem.inputFile(any(FilePredicate.class))).thenAnswer(new Answer<InputFile>() {
       @Override
       public InputFile answer(InvocationOnMock invocation) throws Throwable {
-        String fileName = invocation.getArgumentAt(0, CustomFilePredicate.class).fileName;
+        String fileName = invocation.getArgument(0, CustomFilePredicate.class).fileName;
         DefaultInputFile gosuFile;
         if (!gosuFilesByName.containsKey(fileName)) {
           // store gosu file as default input files
-          gosuFile = new DefaultInputFile("", fileName)
+          gosuFile = new TestInputFileBuilder("", fileName)
             .setLanguage(Gosu.KEY)
             .setType(Type.MAIN)
-            .initMetadata(new String(Files.readAllBytes(sampleFile.toPath()), "UTF-8"));
+            .initMetadata(new String(Files.readAllBytes(sampleFile.toPath()), "UTF-8"))
+          .build();
           gosuFilesByName.put(fileName, gosuFile);
         }
         return gosuFilesByName.get(fileName);
