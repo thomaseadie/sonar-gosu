@@ -21,7 +21,10 @@ package org.sonar.plugins.gosu;
 
 import org.junit.Test;
 import org.sonar.api.Plugin;
-import org.sonar.api.SonarQubeVersion;
+import org.sonar.api.SonarQubeSide;
+import org.sonar.api.SonarRuntime;
+import org.sonar.api.internal.SonarRuntimeImpl;
+import org.sonar.api.utils.Version;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -30,7 +33,7 @@ public class GosuPluginTest {
   @Test
   public void testExtensions() {
     GosuPlugin plugin = new GosuPlugin();
-    Plugin.Context context = new Plugin.Context(SonarQubeVersion.V5_6);
+    Plugin.Context context = new Plugin.Context(SonarRuntimeImpl.forSonarQube(Version.create(7,6), SonarQubeSide.SCANNER));
     plugin.define(context);
     assertThat(context.getExtensions()).hasSize(16);
   }

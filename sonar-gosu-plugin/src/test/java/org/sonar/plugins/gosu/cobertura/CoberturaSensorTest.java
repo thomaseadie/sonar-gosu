@@ -33,12 +33,15 @@ import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.fs.InputFile.Type;
 import org.sonar.api.batch.fs.internal.DefaultFileSystem;
+import org.sonar.api.batch.fs.internal.DefaultIndexedFile;
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
+import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.coverage.CoverageType;
 import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.config.Settings;
+import org.sonar.api.config.internal.MapSettings;
 import org.sonar.plugins.gosu.GosuPlugin;
 import org.sonar.plugins.gosu.foundation.Gosu;
 
@@ -53,13 +56,13 @@ import static org.mockito.Mockito.when;
 
 public class CoberturaSensorTest {
 
-  private Settings settings;
+  private MapSettings settings;
   private CoberturaSensor sensor;
   private DefaultFileSystem fileSystem;
 
   @Before
   public void setUp() throws Exception {
-    settings = new Settings();
+    settings = new MapSettings();
     settings.addProperties(ImmutableMap.of(GosuPlugin.COBERTURA_REPORT_PATH, "src/test/resources/org/sonar/plugins/gosu/cobertura/coverage.xml"));
     fileSystem = new DefaultFileSystem(new File("."));
     sensor = new CoberturaSensor(settings, fileSystem);
@@ -97,7 +100,7 @@ public class CoberturaSensorTest {
     when(fp.hasAbsolutePath(Matchers.anyString())).thenAnswer(new Answer<FilePredicate>() {
       @Override
       public FilePredicate answer(InvocationOnMock invocation) throws Throwable {
-        return new CustomFilePredicate(invocation.getArgumentAt(0, String.class));
+        return new CustomFilePredicate(invocation.getArgument(0, String.class));
       }
     });
 
@@ -114,13 +117,14 @@ public class CoberturaSensorTest {
         if (firstCall) {
           // The first class in the test coverage.xml is a java class and the rest are gosu
           firstCall = false;
-          return new DefaultInputFile("", "fake.java").setLanguage("java");
+          DefaultIndexedFile ixFile = new DefaultIndexedFile(Gosu.KEY, fileSystem.baseDirPath(), "fake.java", "gosu");
+          return new TestInputFileBuilder("", "fake.java").setLanguage("java").build();
         }
-        String fileName = invocation.getArgumentAt(0, CustomFilePredicate.class).fileName;
+        String fileName = invocation.getArgument(0, CustomFilePredicate.class).fileName;
         DefaultInputFile gosuFile;
         if (!gosuFilesByName.containsKey(fileName)) {
           // store gosu file as default input files
-          gosuFile = new DefaultInputFile("", fileName).setLanguage(Gosu.KEY).setType(Type.MAIN).setLines(Integer.MAX_VALUE);
+          gosuFile = new TestInputFileBuilder("", fileName).setLanguage(Gosu.KEY).setType(Type.MAIN).setLines(Integer.MAX_VALUE).build();
           gosuFilesByName.put(fileName, gosuFile);
         }
         return gosuFilesByName.get(fileName);
@@ -137,14 +141,14 @@ public class CoberturaSensorTest {
     int[] lineNoHits = {9, 10, 11};
 
     for (int line : lineHits) {
-      assertThat(context.lineHits(filekey, CoverageType.UNIT, line)).isEqualTo(1);
+      assertThat(context.lineHits(filekey, line)).isEqualTo(1);
     }
     for (int line : lineNoHits) {
-      assertThat(context.lineHits(filekey, CoverageType.UNIT, line)).isEqualTo(0);
+      assertThat(context.lineHits(filekey, line)).isEqualTo(0);
     }
 
     // No value for java file
-    assertThat(context.lineHits(":/Users/cpicat/myproject/grails-app/domain/com/test/web/EmptyResultException.java", CoverageType.UNIT, 16)).isNull();
+    assertThat(context.lineHits(":/Users/cpicat/myproject/grails-app/domain/com/test/web/EmptyResultException.java",  16)).isNull();
   }
 
   @Test
@@ -163,8 +167,8 @@ public class CoberturaSensorTest {
   @Test
   public void should_not_parse_report_if_settings_does_not_contain_report_path() {
     DefaultFileSystem fileSystem = new DefaultFileSystem(new File("."));
-    fileSystem.add(new DefaultInputFile("", "fake.gosu").setLanguage(Gosu.KEY));
-    sensor = new CoberturaSensor(new Settings(), fileSystem);
+    fileSystem.add(new TestInputFileBuilder("", "fake.gosu").setLanguage(Gosu.KEY).build());
+    sensor = new CoberturaSensor(new MapSettings(), fileSystem);
 
     SensorContext context = mock(SensorContext.class);
     sensor.execute(context);
@@ -174,11 +178,11 @@ public class CoberturaSensorTest {
 
   @Test
   public void should_not_parse_report_if_report_does_not_exist() {
-    Settings settings = new Settings();
+    MapSettings settings = new MapSettings();
     settings.addProperties(ImmutableMap.of(GosuPlugin.COBERTURA_REPORT_PATH, "org/sonar/plugins/gosu/cobertura/fake-coverage.xml"));
 
     DefaultFileSystem fileSystem = new DefaultFileSystem(new File("."));
-    fileSystem.add(new DefaultInputFile("", "fake.groovy").setLanguage(Gosu.KEY));
+    fileSystem.add(new TestInputFileBuilder("", "fake.groovy").setLanguage(Gosu.KEY).build());
 
     sensor = new CoberturaSensor(settings, fileSystem);
 
@@ -190,11 +194,11 @@ public class CoberturaSensorTest {
 
   @Test
   public void should_use_relative_path_to_get_report() {
-    Settings settings = new Settings();
+    MapSettings settings = new MapSettings();
     settings.addProperties(ImmutableMap.of(GosuPlugin.COBERTURA_REPORT_PATH, "//org/sonar/plugins/gosu/cobertura/fake-coverage.xml"));
 
     DefaultFileSystem fileSystem = new DefaultFileSystem(new File("."));
-    fileSystem.add(new DefaultInputFile("", "fake.groovy").setLanguage(Gosu.KEY));
+    fileSystem.add(new TestInputFileBuilder("", "fake.groovy").setLanguage(Gosu.KEY).build());
 
     sensor = new CoberturaSensor(settings, fileSystem);
 
@@ -206,7 +210,7 @@ public class CoberturaSensorTest {
 
   @Test
   public void should_execute_on_project() {
-    fileSystem.add(new DefaultInputFile("", "fake.groovy").setLanguage(Gosu.KEY));
+    fileSystem.add(new TestInputFileBuilder("", "fake.groovy").setLanguage(Gosu.KEY).build());
     assertThat(sensor.shouldExecuteOnProject()).isTrue();
   }
 

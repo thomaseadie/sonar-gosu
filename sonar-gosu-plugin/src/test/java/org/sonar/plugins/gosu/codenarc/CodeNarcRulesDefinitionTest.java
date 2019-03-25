@@ -24,6 +24,7 @@ import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.api.server.rule.RulesDefinition.Rule;
+import org.sonar.api.server.rule.RulesDefinitionXmlLoader;
 import org.sonar.plugins.gosu.foundation.Gosu;
 
 import java.util.List;
@@ -34,7 +35,8 @@ public class CodeNarcRulesDefinitionTest {
 
   @Test
   public void test() {
-    CodeNarcRulesDefinition definition = new CodeNarcRulesDefinition();
+    RulesDefinitionXmlLoader xmlLoader = new RulesDefinitionXmlLoader();
+    CodeNarcRulesDefinition definition = new CodeNarcRulesDefinition(xmlLoader);
     RulesDefinition.Context context = new RulesDefinition.Context();
     definition.define(context);
     RulesDefinition.Repository repository = context.repository(CodeNarcRulesDefinition.REPOSITORY_KEY);

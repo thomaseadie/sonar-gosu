@@ -23,7 +23,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.sonar.api.config.Settings;
+import org.sonar.api.config.Configuration;
 import org.sonar.api.resources.AbstractLanguage;
 import org.sonar.plugins.gosu.GosuPlugin;
 
@@ -36,12 +36,12 @@ public class Gosu extends AbstractLanguage {
   /**
    * Settings of the plugin.
    */
-  private final Settings settings;
+  private final Configuration settings;
 
   /**
    * Default constructor
    */
-  public Gosu(Settings settings) {
+  public Gosu(Configuration settings) {
     super(KEY, "Gosu");
     this.settings = settings;
   }
@@ -81,7 +81,7 @@ public class Gosu extends AbstractLanguage {
   }
 
   public String getCodeNarcReportPath() {
-    return settings.getString(GosuPlugin.CODENARC_REPORT_PATH);
+    return settings.get(GosuPlugin.CODENARC_REPORT_PATH).orElse(null);
   }
 
   public List<String> getBinaryDirectories() {

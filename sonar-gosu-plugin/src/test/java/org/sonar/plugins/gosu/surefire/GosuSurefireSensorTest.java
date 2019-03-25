@@ -26,11 +26,13 @@ import org.mockito.stubbing.Answer;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.fs.internal.DefaultFileSystem;
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
+import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.component.ResourcePerspectives;
 import org.sonar.api.config.Settings;
+import org.sonar.api.config.internal.ConfigurationBridge;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.scan.filesystem.PathResolver;
 import org.sonar.plugins.gosu.GosuPlugin;
@@ -62,8 +64,7 @@ public class GosuSurefireSensorTest {
   @Before
   public void before() {
     fs = new DefaultFileSystem(new File("."));
-    DefaultInputFile gosuFile = new DefaultInputFile("", "src/org/foo/gosu");
-    gosuFile.setLanguage(Gosu.KEY);
+    DefaultInputFile gosuFile = new TestInputFileBuilder("", "src/org/foo/gosu").setLanguage(Gosu.KEY).build();
     fs.add(gosuFile);
     perspectives = mock(ResourcePerspectives.class);
 
@@ -71,7 +72,7 @@ public class GosuSurefireSensorTest {
 
     Settings settings = mock(Settings.class);
     when(settings.getStringArray(GosuPlugin.FILE_SUFFIXES_KEY)).thenReturn(new String[] {".gosu", "gosu"});
-    gosu = new Gosu(settings);
+    gosu = new Gosu( new ConfigurationBridge(settings));
 
     GosuSurefireParser parser = spy(new GosuSurefireParser(gosu, perspectives, fs));
 
@@ -137,7 +138,7 @@ public class GosuSurefireSensorTest {
   }
 
   private static DefaultInputFile inputFile(String key) {
-    return new DefaultInputFile("", key).setType(InputFile.Type.TEST);
+    return new TestInputFileBuilder("", key).setType(InputFile.Type.TEST).build();
   }
 
   @Test

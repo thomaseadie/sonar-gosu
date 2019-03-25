@@ -24,6 +24,7 @@ import org.junit.Test;
 import org.sonar.api.batch.fs.InputFile.Type;
 import org.sonar.api.batch.fs.internal.DefaultFileSystem;
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
+import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 
 import java.io.File;
 
@@ -44,10 +45,10 @@ public class GosuFileSystemTest {
   public void isEnabled() {
     assertThat(gosuFileSystem.hasGosuFiles()).isFalse();
 
-    fileSystem.add(new DefaultInputFile("", "fake.file"));
+    fileSystem.add(new TestInputFileBuilder("", "fake.file").build());
     assertThat(gosuFileSystem.hasGosuFiles()).isFalse();
 
-    fileSystem.add(new DefaultInputFile("", "fake.gosu").setLanguage(Gosu.KEY));
+    fileSystem.add(new TestInputFileBuilder("", "fake.gosu").setLanguage(Gosu.KEY).build());
     assertThat(gosuFileSystem.hasGosuFiles()).isTrue();
   }
 
@@ -55,10 +56,10 @@ public class GosuFileSystemTest {
   public void getSourceFile() {
     assertThat(gosuFileSystem.sourceFiles()).isEmpty();
 
-    fileSystem.add(new DefaultInputFile("", "fake.file"));
+    fileSystem.add(new TestInputFileBuilder("", "fake.file").build());
     assertThat(gosuFileSystem.sourceFiles()).isEmpty();
 
-    fileSystem.add(new DefaultInputFile("", "fake.gosu").setLanguage(Gosu.KEY));
+    fileSystem.add(new TestInputFileBuilder("", "fake.gosu").setLanguage(Gosu.KEY).build());
     assertThat(gosuFileSystem.sourceFiles()).hasSize(1);
   }
 
@@ -66,13 +67,13 @@ public class GosuFileSystemTest {
   public void inputFileFromRelativePath() {
     assertThat(gosuFileSystem.sourceInputFileFromRelativePath(null)).isNull();
 
-    fileSystem.add(new DefaultInputFile("", "fake1.file"));
+    fileSystem.add(new TestInputFileBuilder("", "fake1.file").build());
     assertThat(gosuFileSystem.sourceInputFileFromRelativePath("fake1.file")).isNull();
 
-    fileSystem.add(new DefaultInputFile("", "fake2.file").setType(Type.MAIN).setLanguage(Gosu.KEY));
+    fileSystem.add(new TestInputFileBuilder("", "fake2.file").setType(Type.MAIN).setLanguage(Gosu.KEY).build());
     assertThat(gosuFileSystem.sourceInputFileFromRelativePath("fake2.file")).isNotNull();
 
-    fileSystem.add(new DefaultInputFile("", "org/sample/foo/fake3.file").setType(Type.MAIN).setLanguage(Gosu.KEY));
+    fileSystem.add(new TestInputFileBuilder("", "org/sample/foo/fake3.file").setType(Type.MAIN).setLanguage(Gosu.KEY).build());
     assertThat(gosuFileSystem.sourceInputFileFromRelativePath("foo/fake3.file")).isNotNull();
   }
 }
