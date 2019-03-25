@@ -10,7 +10,7 @@
 
   <groupId>org.sonarsource.gosu</groupId>
   <artifactId>gosu</artifactId>
-  <version>2.0</version>
+  <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Sonar Gosu</name>
@@ -61,7 +61,7 @@
     <system>GITHUB</system>
     <url>https://github.com/TheToddLuci0/sonar-gosu/issues</url>
   </issueManagement>
-  
+
   <properties>
     <sonar.version>7.6</sonar.version>
     <jacoco.previous.version>0.7.4.201502262128</jacoco.previous.version>
