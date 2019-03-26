@@ -22,8 +22,8 @@ template="{
   \"scope\": \"All\"
 }
 "
-	touch org.codenarc.rule.gosu.$i.html
-	echo "<h1>Placeholder Content</h1>" > org.codenarc.rule.gosu.$i.html
+	#touch org.codenarc.rule.gosu.$i.html
+	#echo "<h1>Placeholder Content</h1>" > org.codenarc.rule.gosu.$i.html
 	touch org.codenarc.rule.gosu.$i.json
 	echo $template > org.codenarc.rule.gosu.$i.json	
 	count=$count+1
