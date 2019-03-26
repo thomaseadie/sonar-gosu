@@ -1,0 +1,1 @@
+{ "title": "<script>...<\/script> elements should not be nested", "type": "BUG", "status": "ready", "remediation": { "func": "Constant\/Issue", "constantCost": "2mn" }, "tags": [ ], "defaultSeverity": "Major", "ruleSpecification": "RSPEC-464500+1+1+1+1+1+1+1+1+1+1+1", "sqKey": "GosuJavaStyleLineEndingRule", "scope": "All" }
