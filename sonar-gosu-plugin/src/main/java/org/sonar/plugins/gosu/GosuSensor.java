@@ -155,7 +155,7 @@ public class GosuSensor implements Sensor {
       }
     }
 
-    saveMetric(context, sonarFile, CoreMetrics.FILES, 1);
+//    saveMetric(context, sonarFile, CoreMetrics.FILES, 1);
     saveMetric(context, sonarFile, CoreMetrics.CLASSES, classes);
     saveMetric(context, sonarFile, CoreMetrics.FUNCTIONS, methods);
     saveMetric(context, sonarFile, CoreMetrics.COMPLEXITY, complexity);
