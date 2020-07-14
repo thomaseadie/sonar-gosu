@@ -17,9 +17,8 @@
       <description><![CDATA[Maximum allowed nesting depth]]></description>
       <defaultValue>2</defaultValue>
     </param>
-     <debtRemediationFunction>LINEAR</debtRemediationFunction>
+     <debtRemediationFunction>CONSTANT_ISSUE</debtRemediationFunction>
      <remediationFunctionBaseEffort>5min</remediationFunctionBaseEffort>
-     <remediationFunctionGapMultiplier>5min</remediationFunctionGapMultiplier>
   </rule>
 
   <rule>
@@ -35,9 +34,8 @@
       <description><![CDATA[The maximum number of lines allowed in a class definition. ]]></description>
       <defaultValue>1200</defaultValue>
     </param>
-     <debtRemediationFunction>LINEAR</debtRemediationFunction>
+     <debtRemediationFunction>CONSTANT_ISSUE</debtRemediationFunction>
      <remediationFunctionBaseEffort>10min</remediationFunctionBaseEffort>
-     <remediationFunctionGapMultiplier>10min</remediationFunctionGapMultiplier>
   </rule>
 
   <!--<rule>-->
@@ -74,9 +72,8 @@
       <description><![CDATA[The maximum <cyclomatic complexity> value allowed for a single method (or "closure field"). If zero or <null>, then do not check method-level complexity. ]]></description>
       <defaultValue>20</defaultValue>
     </param>
-     <debtRemediationFunction>LINEAR</debtRemediationFunction>
+     <debtRemediationFunction>CONSTANT_ISSUE</debtRemediationFunction>
      <remediationFunctionBaseEffort>10min</remediationFunctionBaseEffort>
-     <remediationFunctionGapMultiplier>10min</remediationFunctionGapMultiplier>
   </rule>
 
   <rule>
@@ -93,9 +90,8 @@
       <description><![CDATA[The maximum number of lines allowed in a function definition. ]]></description>
       <defaultValue>25</defaultValue>
     </param>
-     <debtRemediationFunction>LINEAR</debtRemediationFunction>
-     <remediationFunctionBaseEffort>3min</remediationFunctionBaseEffort>
-     <remediationFunctionGapMultiplier>3min</remediationFunctionGapMultiplier>
+     <debtRemediationFunction>CONSTANT_ISSUE</debtRemediationFunction>
+     <remediationFunctionBaseEffort>10min</remediationFunctionBaseEffort>
   </rule>
 
   <rule>
@@ -116,9 +112,8 @@
       <description><![CDATA[The maximum number of parameters in a function ]]></description>
       <defaultValue>5</defaultValue>
     </param>
-     <debtRemediationFunction>LINEAR</debtRemediationFunction>
+     <debtRemediationFunction>CONSTANT_ISSUE</debtRemediationFunction>
      <remediationFunctionBaseEffort>5min</remediationFunctionBaseEffort>
-     <remediationFunctionGapMultiplier>5min</remediationFunctionGapMultiplier>
   </rule>
 
   <rule>
